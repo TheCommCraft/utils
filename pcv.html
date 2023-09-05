@@ -81,15 +81,15 @@
         </div>
     </div>
     <script>
-        var trf = document.getElementById("trf").lastChild
-        var trl = document.getElementById("trl").lastChild
-        var tdf = document.getElementById("tdf").lastChild
-        var tdl = document.getElementById("tdl").lastChild
+        var trfE = document.getElementById("trf").lastChild
+        var trlE = document.getElementById("trl").lastChild
+        var tdfE = document.getElementById("tdf").lastChild
+        var tdlE = document.getElementById("tdl").lastChild
         function setPercentages(trfP, trlP, tdfP, tdlP) {
-            trf.data = Math.round(trfP * 100) + "% favorites";
-            trl.data = Math.round(trlP * 100) + "% likes";
-            tdf.data = Math.round(tdfP * 100) + "% favorites";
-            tdl.data = Math.round(tdlP * 100) + "% likes";
+            trfE.data = Math.round(trfP * 100) + "% favorites";
+            trlE.data = Math.round(trlP * 100) + "% likes";
+            tdfE.data = Math.round(tdfP * 100) + "% favorites";
+            tdlE.data = Math.round(tdlP * 100) + "% likes";
         }
         setPercentages(0, 0, 0, 0);
     </script>
