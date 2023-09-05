@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title Page</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .title {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            background-color: lightblue;
+            border-radius: 10px;
+        }
+
+        .title:nth-child(odd) {
+            background-color: red;
+        }
+
+        h1 {
+            color: white;
+            margin: 0;
+            font-size: 128px; /* Larger font size */
+            font-weight: bold;
+        }
+
+        .percentage {
+            color: #333;
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title" style="order: 2;"> <!-- Swap sides -->
+            <h1>Team Ruby</h1>
+            <p class="percentage">50% favorites</p>
+            <p class="percentage">75% favorites</p>
+        </div>
+        <div class="title" style="order: 1;"> <!-- Swap sides -->
+            <h1>Team Diamond</h1>
+            <p class="percentage">60% favorites</p>
+            <p class="percentage">90% favorites</p>
+        </div>
+    </div>
+</body>
+</html>
