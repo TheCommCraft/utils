@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title Page</title>
+    <title>Stylish Page</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <style>
         body {
@@ -11,37 +11,57 @@
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .container {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding: 20px;
+            width: 80%;
+            max-width: 600px;
         }
 
         .title {
-            flex: 1;
-            padding: 20px;
             text-align: center;
-            background-color: lightblue;
             border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            color: white;
+            flex: 1;
+            transition: background-color 0.3s ease-in-out;
+            margin: 10px;
         }
 
-        .title:nth-child(odd) {
-            background-color: red;
+        .ruby-title {
+            background-color: #fe5743;
+        }
+
+        .diamond-title {
+            background-color: #3498db;
+        }
+
+        .ruby-title:hover {
+            background-color: #ee4733;
+            cursor: pointer;
+        }
+
+        .diamond-title:hover {
+            background-color: #2980b9;
+            cursor: pointer;
         }
 
         h1 {
-            color: white;
-            margin: 0;
-            font-size: 128px; /* Larger font size */
+            font-size: 36px;
             font-weight: bold;
+            margin: 0;
         }
 
         .percentage {
-            color: #333;
-            font-size: 36px;
+            font-size: 20px;
             font-weight: bold;
             margin-top: 10px;
         }
@@ -49,16 +69,29 @@
 </head>
 <body>
     <div class="container">
-        <div class="title" style="order: 2;"> <!-- Swap sides -->
+        <div class="title ruby-title">
             <h1>Ruby</h1>
-            <p class="percentage">50% favorites</p>
-            <p class="percentage">75% likes</p>
+            <p class="percentage" id="trf">50% favorites</p>
+            <p class="percentage" id="trl">75% likes</p>
         </div>
-        <div class="title" style="order: 1;"> <!-- Swap sides -->
+        <div class="title diamond-title">
             <h1>Diamond</h1>
-            <p class="percentage">60% favorites</p>
-            <p class="percentage">90% likes</p>
+            <p class="percentage" id="tdf">60% favorites</p>
+            <p class="percentage" id="tdl">90% likes</p>
         </div>
     </div>
+    <script>
+        var trf = document.getElementById("trf")
+        var trl = document.getElementById("trl")
+        var tdf = document.getElementById("tdf")
+        var tdl = document.getElementById("tdl")
+        function setPercentages(trfP, trlP, tdfP, tdlP) {
+            trf.data = Math.round(trfP * 100) + "% favorites";
+            trl.data = Math.round(trlP * 100) + "% likes";
+            tdf.data = Math.round(tdfP * 100) + "% favorites";
+            tdl.data = Math.round(tdlP * 100) + "% likes";
+        }
+        setPercentages(0, 0, 0, 0);
+    </script>
 </body>
 </html>
