@@ -89,21 +89,21 @@
         </div>
     </div>
     <script>
-        var trfE = document.getElementById("trf").lastChild
-        var trlE = document.getElementById("trl").lastChild
-        var tdfE = document.getElementById("tdf").lastChild
-        var tdlE = document.getElementById("tdl").lastChild
-        var trvi = document.getElementById("trvi")
-        var trfi = document.getElementById("trfi")
-        var trli = document.getElementById("trli")
-        var tdvi = document.getElementById("tdvi")
-        var tdfi = document.getElementById("tdfi")
-        var tdli = document.getElementById("tdli")
+        var trfE = document.getElementById("trf").lastChild;
+        var trlE = document.getElementById("trl").lastChild;
+        var tdfE = document.getElementById("tdf").lastChild;
+        var tdlE = document.getElementById("tdl").lastChild;
+        var trvi = document.getElementById("trvi");
+        var trfi = document.getElementById("trfi");
+        var trli = document.getElementById("trli");
+        var tdvi = document.getElementById("tdvi");
+        var tdfi = document.getElementById("tdfi");
+        var tdli = document.getElementById("tdli");
         function setPercentages(trfP, trlP, tdfP, tdlP) {
-            trfE.data = Math.round(trfP * 100) + "% favorites";
-            trlE.data = Math.round(trlP * 100) + "% likes";
-            tdfE.data = Math.round(tdfP * 100) + "% favorites";
-            tdlE.data = Math.round(tdlP * 100) + "% likes";
+            trfE.data = Math.round(trfP * 10000) / 100 + "% favorites";
+            trlE.data = Math.round(trlP * 10000) / 100 + "% likes";
+            tdfE.data = Math.round(tdfP * 10000) / 100 + "% favorites";
+            tdlE.data = Math.round(tdlP * 10000) / 100 + "% likes";
         }
         setPercentages(0, 0, 0, 0);
         data = fetch("api.scratch.mit.edu/projects/888326329/");
