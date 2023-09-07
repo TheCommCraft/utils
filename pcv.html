@@ -73,11 +73,19 @@
             <h1>Ruby</h1>
             <p class="percentage" id="trf">50% favorites</p>
             <p class="percentage" id="trl">75% likes</p>
+            Input views, favorites and likes.
+            <input value="0" id="trvi">
+            <input value="0" id="trfi">
+            <input value="0" id="trli">
         </div>
         <div class="title diamond-title">
             <h1>Diamond</h1>
             <p class="percentage" id="tdf">60% favorites</p>
             <p class="percentage" id="tdl">90% likes</p>
+            Input views, favorites and likes.
+            <input value="0" id="tdvi">
+            <input value="0" id="tdfi">
+            <input value="0" id="tdli">
         </div>
     </div>
     <script>
@@ -85,6 +93,12 @@
         var trlE = document.getElementById("trl").lastChild
         var tdfE = document.getElementById("tdf").lastChild
         var tdlE = document.getElementById("tdl").lastChild
+        var trvi = document.getElementById("trvi")
+        var trfi = document.getElementById("trfi")
+        var trli = document.getElementById("trli")
+        var tdvi = document.getElementById("tdvi")
+        var tdfi = document.getElementById("tdfi")
+        var tdli = document.getElementById("tdli")
         function setPercentages(trfP, trlP, tdfP, tdlP) {
             trfE.data = Math.round(trfP * 100) + "% favorites";
             trlE.data = Math.round(trlP * 100) + "% likes";
@@ -93,6 +107,7 @@
         }
         setPercentages(0, 0, 0, 0);
         data = fetch("api.scratch.mit.edu/projects/888326329/");
+        setInterval(function () {setPercentages(trfi.value / trvi.value, trli.value / trvi.value, tdfi.value / tdvi.value, tdli.value / tdvi.value);}, 100);
     </script>
 </body>
 </html>
