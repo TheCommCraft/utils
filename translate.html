@@ -151,11 +151,13 @@
         }
 
         function displayNextWord() {
+            try  {
             currentWordIndex = getRandomWordIndex();
             const currentWord = words[currentWordIndex];
             latinWordElement.textContent = currentWord.latin;
             translationInput.value = "";
             resultElement.textContent = "";
+            } catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
         }
 
         document.getElementById("quiz-form").addEventListener("submit", function (e) {
