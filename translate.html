@@ -105,6 +105,7 @@
         }
 
         document.getElementById("quiz-form").addEventListener("submit", function (e) {
+            try {
             e.preventDefault(); // Prevent the default form submission behavior
             if (currentWordIndex !== null) {
                 const currentWord = words[currentWordIndex];
@@ -118,6 +119,8 @@
                 }
                 setTimeout(displayNextWord, 1000); // Delay before showing the next word
             }
+            }
+            catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
         });
 
         displayNextWord();
