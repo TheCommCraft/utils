@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de"> <!-- Set the language to German -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latein Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin: 20px 0;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #latin-word {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #translation-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        #submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #333;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Nebensatzquiz</h1>
+    <form id="quiz-form">
+        <div id="quiz-container">
+            <p id="latin-word">Lateinischer Satz hier</p>
+            <input type="text" id="translation-input" name="translation" placeholder="Geben Sie die Nebensatzart ein">
+            <input type="submit" id="submit-button" value="Überprüfen">
+            <p id="result"></p>
+        </div>
+    </form>
+
+    <script>
+        let words = [
+            {"sentence": "Magister discipulos suos docet, ut libros legant.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Magister discipulos suos docet, libros legere.", "type": "finaler Objektsatz"},
+            {"sentence": "Caesar pugnavit, ut victor esset.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Caesar se paravit, ut hostes superaret.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Generali datur imperium, ut exercitum ducat.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Magister docebat discipulos, ne errores facerent.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Discipuli legunt libros, ut scientiam acquirent.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Hostes se armant, ut castra occupent.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Rex donat milites, quos diu servaverit.", "type": "finaler Objektsatz"},
+            {"sentence": "Magister monuit discipulos, ne otiosi essent.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Discipulus rogitat magistrum, quomodo hoc facere possit.", "type": "finaler Objektsatz"},
+            {"sentence": "Magister respondet, quo tempore venirent.", "type": "finaler Objektsatz"},
+            {"sentence": "Generali persuasum est, ut iter faceret.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Magistra docet pueros, ut disciplinam teneant.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Caesar se parat, ut hostes terrere possit.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Legatus ducem rogat, quo modo fortunam inveniret.", "type": "finaler Objektsatz"},
+            {"sentence": "Discipuli legunt, quid magister scripserit.", "type": "finaler Objektsatz"},
+            {"sentence": "Rex auxilium rogat, ut hostes superet.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Magister discipulos suos laudat, quod bene laboraverint.", "type": "finaler Objektsatz"},
+            {"sentence": "Caesar militibus imperat, ut fortes sint.", "type": "finaler Adverbialsatz"},
+            {"sentence": "Discipuli tam bene legunt, ut laudandi sint.", "type": "Konsekutivsatz"},
+            {"sentence": "Magister tantam disciplinam docet, ut discipuli bene studeant.", "type": "Konsekutivsatz"},
+            {"sentence": "Generali ita persuadebatur, ut milites parati essent.", "type": "Konsekutivsatz"},
+            {"sentence": "Legatus tam fortiter pugnavit, ut hostes fugerint.", "type": "Konsekutivsatz"},
+            {"sentence": "Rex tam celeriter imperavit, ut hostes capti sint.", "type": "Konsekutivsatz"},
+            {"sentence": "Magister tam clare explicat, ut discipuli intelligant.", "type": "Konsekutivsatz"},
+            {"sentence": "Discipulus tam bene scribit, ut laudandus sit.", "type": "Konsekutivsatz"},
+            {"sentence": "Hostes tam saepe oppugnant, ut urbs timeretur.", "type": "Konsekutivsatz"},
+            {"sentence": "Caesar ita duxit exercitum, ut inimici superarentur.", "type": "Konsekutivsatz"},
+            {"sentence": "Magistra tam patienter docet, ut puellae bene discant.", "type": "Konsekutivsatz"}
+        ];
+
+        let currentWordIndex = null;
+        const latinWordElement = document.getElementById("latin-word");
+        const translationInput = document.getElementById("translation-input");
+        const submitButton = document.getElementById("submit-button");
+        const resultElement = document.getElementById("result");
+
+        function getRandomWordIndex() {
+            return Math.floor(Math.random() * words.length);
+        }
+
+        function displayNextWord() {
+            try  {
+            currentWordIndex = getRandomWordIndex();
+            const currentWord = words[currentWordIndex];
+            latinWordElement.textContent = currentWord.sentence;
+            translationInput.value = "";
+            resultElement.textContent = "";
+            } catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        }
+
+        document.getElementById("quiz-form").addEventListener("submit", function (e) {
+            try {
+            e.preventDefault(); // Prevent the default form submission behavior
+            if (currentWordIndex !== null) {
+                const currentWord = words[currentWordIndex];
+                const userTranslation = translationInput.value.trim().toLowerCase();
+                if (userTranslation === currentWord.type.toLowerCase()) {
+                    resultElement.textContent = `Richtig! ${currentWord.type}`;
+                    // Remove the word from the list if translated correctly
+                    words.splice(currentWordIndex, 1);
+                } else {
+                    resultElement.textContent = `Falsch. Die richtige Antwort ist: ${currentWord.type}`;
+                }
+                setTimeout(displayNextWord, 1000); // Delay before showing the next word
+            }
+            }
+            catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        });
+
+        displayNextWord();
+    </script>
+</body>
+</html>
