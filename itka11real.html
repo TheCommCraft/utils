@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question and Answer Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    #question {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    #answerInput {
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+
+    #result {
+      font-weight: bold;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="question"></div>
+  <input type="text" id="answerInput" placeholder="Your answer..." oninput="updateResult()">
+  <button onclick="checkAnswer()">Submit Answer</button>
+  <div id="result"></div>
+
+  <script>
+    // Define an array of questions and answers
+    const qaPairs = [
+        {'question': 'Il Pantheon 1', 'answer': 'un antico tempio'}, {'question': 'Il Pantheon 2', 'answer': 'famoso per la grande cupola con un buco al centro chiamato "oculo"'}, {'question': 'Il Pantheon 3', 'answer': 'costruito dai Romani'}, {'question': 'Il Pantheon 4', 'answer': 'era un tempio per tutti gli dei di Roma'}, {'question': 'Il Pantheon 5', 'answer': 'oggi una chiesa'}, {'question': 'Il Pantheon 6', 'answer': 'dove si trova: Piazza della Rotonda, vicino alla stazione Barberini (Linea A).'},
+        {'question': 'Il Colosseo 1', 'answer': 'è uno dei luoghi più famosi'}, {'question': 'Il Colosseo 2', 'answer': "costruito nell'anno 80 d.C."}, {'question': 'Il Colosseo 3', 'answer': 'Era un grande anfiteatro per giochi e spettacoli'}, {'question': 'Il Colosseo 4', 'answer': 'poteva ospitare ca. 80.000 spettatori.'}, {'question': 'Il Colosseo 5', 'answer': 'Ha una forma ovale'}, {'question': 'Il Colosseo 6', 'answer': 'dove si trova: fermata Colosse (linea B)'}
+    ];
+
+    let currentQuestionIndex = 0;
+
+    function displayQuestion() {
+      const questionElement = document.getElementById("question");
+      questionElement.textContent = qaPairs[currentQuestionIndex].question;
+    }
+
+    function updateResult() {
+      const userAnswer = document.getElementById("answerInput").value.toLowerCase();
+      const correctAnswer = qaPairs[currentQuestionIndex].answer.toLowerCase();
+      const resultElement = document.getElementById("result");
+
+      if (correctAnswer.startsWith(userAnswer)) {
+        resultElement.style.color = "green";
+        resultElement.textContent = "You are doing great!";
+      } else {
+        resultElement.style.color = "red";
+        const minLength = Math.min(userAnswer.length, correctAnswer.length);
+        let commonPrefixLength = minLength;
+        const incorrectPart = userAnswer.substring(commonPrefixLength);
+        resultElement.textContent = `Incorrect. The correct answer starts with: ${correctAnswer.substring(0, commonPrefixLength)}${incorrectPart ? ' (You typed: ' + incorrectPart + ')' : ''}`;
+      }
+    }
+
+    function checkAnswer() {
+      const userAnswer = document.getElementById("answerInput").value.toLowerCase();
+      const correctAnswer = qaPairs[currentQuestionIndex].answer.toLowerCase();
+      const resultElement = document.getElementById("result");
+
+      if (userAnswer === correctAnswer) {
+        resultElement.style.color = "green";
+        resultElement.textContent = "Correct! Well done!";
+        // Move to the next question
+        currentQuestionIndex = (currentQuestionIndex + 1) % qaPairs.length;
+        // Display the next question
+        displayQuestion();
+      } else {
+        resultElement.style.color = "red";
+        resultElement.textContent = `Incorrect. The correct answer is: ${correctAnswer}`;
+        
+        currentQuestionIndex = 0;
+        displayQuestion();
+      }
+
+      // Clear the input field
+      document.getElementById("answerInput").value = "";
+    }
+
+    // Submit on pressing Enter key
+    document.getElementById("answerInput").addEventListener("keyup", function(event) {
+      if (event.key === "Enter") {
+        checkAnswer();
+      }
+    });
+
+    // Initial setup
+    displayQuestion();
+  </script>
+
+</body>
+</html>
