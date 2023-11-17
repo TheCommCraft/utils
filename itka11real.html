@@ -32,13 +32,16 @@
   <div id="question"></div>
   <input type="text" id="answerInput" placeholder="Your answer..." oninput="updateResult()">
   <button onclick="checkAnswer()">Submit Answer</button>
+  <button onclick="skip()">Skip</button>
   <div id="result"></div>
 
   <script>
     // Define an array of questions and answers
     const qaPairs = [
         {'question': 'Il Pantheon 1', 'answer': 'un antico tempio'}, {'question': 'Il Pantheon 2', 'answer': 'famoso per la grande cupola con un buco al centro chiamato "oculo"'}, {'question': 'Il Pantheon 3', 'answer': 'costruito dai Romani'}, {'question': 'Il Pantheon 4', 'answer': 'era un tempio per tutti gli dei di Roma'}, {'question': 'Il Pantheon 5', 'answer': 'oggi una chiesa'}, {'question': 'Il Pantheon 6', 'answer': 'dove si trova: Piazza della Rotonda, vicino alla stazione Barberini (Linea A).'},
-        {'question': 'Il Colosseo 1', 'answer': 'è uno dei luoghi più famosi'}, {'question': 'Il Colosseo 2', 'answer': "costruito nell'anno 80 d.C."}, {'question': 'Il Colosseo 3', 'answer': 'Era un grande anfiteatro per giochi e spettacoli'}, {'question': 'Il Colosseo 4', 'answer': 'poteva ospitare ca. 80.000 spettatori.'}, {'question': 'Il Colosseo 5', 'answer': 'Ha una forma ovale'}, {'question': 'Il Colosseo 6', 'answer': 'dove si trova: fermata Colosse (linea B)'}
+        {'question': 'Il Colosseo 1', 'answer': 'è uno dei luoghi più famosi'}, {'question': 'Il Colosseo 2', 'answer': "costruito nell'anno 80 d.C."}, {'question': 'Il Colosseo 3', 'answer': 'Era un grande anfiteatro per giochi e spettacoli'}, {'question': 'Il Colosseo 4', 'answer': 'poteva ospitare ca. 80.000 spettatori.'}, {'question': 'Il Colosseo 5', 'answer': 'Ha una forma ovale'}, {'question': 'Il Colosseo 6', 'answer': 'dove si trova: fermata Colosse (linea B)'},
+        {'question': 'San Lorenzo 1', 'answer': 'è un quartiere relativamente giovane, costruito nell 1800'}, {'question': 'San Lorenzo 2', 'answer': 'un quartiere popolare: all`inizio per operai (Arbeiter*innen), oggi per studenti'}, {'question': 'San Lorenzo 3', 'answer': 'San Lorenzo ha un’intensa vita notturna e molti posti di cultura.'}, {'question': 'San Lorenzo 4', 'answer': 'dove si trova: nella zona sud-est di Roma, tra le Mura Aureliane e il Cimitero del Verano'}
+    
     ];
 
     let currentQuestionIndex = 0;
@@ -87,6 +90,11 @@
 
       // Clear the input field
       document.getElementById("answerInput").value = "";
+    }
+
+    function skip() {
+        currentQuestionIndex ++;
+        displayQuestion();
     }
 
     // Submit on pressing Enter key
