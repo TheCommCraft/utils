@@ -33,6 +33,7 @@
   <input type="text" id="answerInput" placeholder="Your answer..." oninput="updateResult()">
   <button onclick="checkAnswer()">Submit Answer</button>
   <button onclick="skip()">Skip</button>
+  <button onclick="displaySolution()">Show Answer</button>
   <div id="result"></div>
 
   <script>
@@ -95,6 +96,13 @@
     function skip() {
         currentQuestionIndex ++;
         displayQuestion();
+    }
+
+    function displaySolution() {
+        const resultElement = document.getElementById("result");
+        const correctAnswer = qaPairs[currentQuestionIndex].answer.toLowerCase();
+        resultElement.style.color = "green";
+        resultElement.textContent = `It is "${correctAnswer}".`;
     }
 
     // Submit on pressing Enter key
