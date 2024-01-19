@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de"> <!-- Set the language to German -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latein Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin: 20px 0;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #latin-word {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #translation-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        #submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #333;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Italienischquiz</h1>
+    <form id="quiz-form">
+        <div id="quiz-container">
+            <p id="latin-word">Italienisch hier</p>
+            <input type="text" id="translation-input" name="translation" placeholder="Geben Sie etwas ein">
+            <input type="submit" id="submit-button" value="Überprüfen">
+            <p id="result"></p>
+        </div>
+    </form>
+
+    <script>
+        let words = [{'sentence': 'giacca', 'type': 'Jacke'}, {'sentence': 'cravatta', 'type': 'Krawatte'}, {'sentence': 'cornetti', 'type': 'Hörnchen'}, {'sentence': 'furto', 'type': 'Diebstahl'}, {'sentence': 'proprietario', 'type': 'Eigentümer'}, {'sentence': 'in fretta', 'type': 'eilig, schnell'}, {'sentence': 'aperitivo', 'type': 'Aperitif'}, {'sentence': 'vetrine', 'type': 'Schaufenster'}, {'sentence': 'Bloielli', 'type': 'kein klarer Begriff erkannt'}, {'sentence': 'artigianali', 'type': 'handgefertigt'}, {'sentence': 'hanno rubato', 'type': 'sie haben gestohlen'}, {'sentence': 'mostrare', 'type': 'zeigen'}, {'sentence': 'si è accorto', 'type': 'er hat bemerkt'}, {'sentence': 'mancava', 'type': 'es fehlte'}, {'sentence': 'scatola', 'type': 'Schachtel, Kiste'}, {'sentence': 'tappeto', 'type': 'Teppich'}, {'sentence': 'giglio', 'type': 'Lilie'}, {'sentence': 'gialli', 'type': 'Krimis'}, {'sentence': 'nemici', 'type': 'Feinde'}, {'sentence': 'proteggere', 'type': 'schützen'}, {'sentence': 'mocassino', 'type': 'Mokassin'}, {'sentence': 'ha buon gusto', 'type': 'hat guten Geschmack'}, {'sentence': 'plastica', 'type': 'Plastik'}, {'sentence': 'tasca', 'type': 'Tasche'}, {'sentence': 'in anticipo', 'type': 'im Voraus'}, {'sentence': 'bruschette', 'type': 'geröstetes Brot mit Tomaten und Olivenöl'}, {'sentence': 'tacco', 'type': 'Absatz'}, {'sentence': 'burlone', 'type': 'Spaßvogel'}, {'sentence': 'non è mai morto nessuno', 'type': 'niemand ist daran gestorben (es ist nicht so schlimm)'}, {'sentence': 'brindisi', 'type': 'Toast'}, {'sentence': 'ha tradito', 'type': 'hat betrogen'}, {'sentence': 'bacio', 'type': 'Kuss'}, {'sentence': 'per terra', 'type': 'auf dem Boden'}, {'sentence': 'si lamenta', 'type': 'er/sie/es beschwert sich'}, {'sentence': 'doccia', 'type': 'Dusche'}, {'sentence': 'cartelli', 'type': 'Schilder'}];
+
+        let currentWordIndex = null;
+        const latinWordElement = document.getElementById("latin-word");
+        const translationInput = document.getElementById("translation-input");
+        const submitButton = document.getElementById("submit-button");
+        const resultElement = document.getElementById("result");
+
+        function getRandomWordIndex() {
+            return Math.floor(Math.random() * words.length);
+        }
+
+        function displayNextWord() {
+            try  {
+            currentWordIndex = getRandomWordIndex();
+            const currentWord = words[currentWordIndex];
+            latinWordElement.textContent = currentWord.sentence;
+            translationInput.value = "";
+            resultElement.textContent = "";
+            } catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        }
+
+        document.getElementById("quiz-form").addEventListener("submit", function (e) {
+            try {
+            e.preventDefault(); // Prevent the default form submission behavior
+            if (currentWordIndex !== null) {
+                const currentWord = words[currentWordIndex];
+                const userTranslation = translationInput.value.trim().toLowerCase();
+                if (userTranslation === currentWord.type.toLowerCase()) {
+                    resultElement.textContent = `Richtig! ${currentWord.type}`;
+                    // Remove the word from the list if translated correctly
+                    words.splice(currentWordIndex, 1);
+                } else {
+                    resultElement.textContent = `Falsch. Die richtige Antwort ist: ${currentWord.type}`;
+                }
+                setTimeout(displayNextWord, 1000); // Delay before showing the next word
+            }
+            }
+            catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        });
+
+        displayNextWord();
+    </script>
+</body>
+</html>
