@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de"> <!-- Set the language to German -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latein Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin: 20px 0;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #latin-word {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #translation-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        #submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #333;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Italienischquiz</h1>
+    <form id="quiz-form" autocomplete="off">
+        <div id="quiz-container">
+            <p id="latin-word">Italienisch hier</p>
+            <input type="text" id="translation-input" name="translation" placeholder="Geben Sie etwas ein">
+            <input type="submit" id="submit-button" value="Überprüfen">
+            <p id="result"></p>
+        </div>
+    </form>
+
+    <script>
+        let words = [{'sentence': 'e-vertere, -verto, -verti, -versum', 'type': 'umstürzen; zerstören; zugrunde richten'}, {'sentence': 'con-ficere, -ficio, -feci, -fectum', 'type': 'vollenden; erledigen; umbringen, töten'}, {'sentence': 'trans-ferre, -fero, -tuli, -latum', 'type': 'hinüberbringen, übertragen'}, {'sentence': 'con-ferre, -fero, -tuli, -latum', 'type': 'überbringen, zusammenbringen, zusammentragen'}, {'sentence': 'se ad philosophiae studia conferre', 'type': 'sich den Studien der Philosophie witmen'}, {'sentence': 'tribuere, tribuo, tribui, tributum', 'type': 'zuteilen; schenken; erweisen'}, {'sentence': 'resistere, resisto, restiti, -', 'type': 'Widerstand leisten'}, {'sentence': 'dare, do, dedi, datum', 'type': '(von sich) geben; gestatten'}, {'sentence': 'mandare', 'type': 'auftragen; übergeben, anvertrauen'}, {'sentence': 'de-ponere, depono, deposui, depositum', 'type': 'niederlegen; aufgeben'}, {'sentence': 'cognitio, onis f.', 'type': 'Wissen'}, {'sentence': 'otium, -i n', 'type': 'Muße, Freizeit; Ruhe; Frieden'}, {'sentence': 'cura, curae f', 'type': 'die Sorge; die Sorgfalt'}, {'sentence': 'adulescens, adulescentis m; Gen. Pl. adulescentium', 'type': 'der junge Mann'}, {'sentence': 'tempus, temporis n', 'type': 'Zeit'}, {'sentence': 'multum temporis', 'type': 'viel Zeit'}, {'sentence': 'satis temporis', 'type': 'genug Zeit'}, {'sentence': 'litterae, arum f.', 'type': '1. der Brief 2. die Wissenschaften 3. die Literatur'}, {'sentence': 'liber, libera, liberum', 'type': 'frei'}, {'sentence': 'omnis, is, e', 'type': 'jeder; alles'}, {'sentence': 'unus, a, um (Gen. unius; Dat. uni)', 'type': 'ein; einzelner'}, {'sentence': 'nullus, a, um', 'type': 'kein; Nichts'}, {'sentence': 'mihi nomen est', 'type': 'Mein Name ist'}, {'sentence': 'ego (Dat. mihi, Akk. me, Abl. me)', 'type': 'ich'}, {'sentence': 'qui, quae, quod', 'type': 'dieser, diese, dieses; welcher, welche, welches'}, {'sentence': 'hic, haec, hoc', 'type': 'dieser, diese, dieses'}, {'sentence': 'is, ea, id', 'type': 'dieser, diese, dieses'}, {'sentence': 'ita', 'type': 'so'}, {'sentence': 'ut', 'type': 'dass'}, {'sentence': 'ne', 'type': 'ob, ob ... nicht'}, {'sentence': 'cum', 'type': 'als, nachdem, während; da; obwohl'}, {'sentence': 'si', 'type': 'wenn'}, {'sentence': 'nisi', 'type': 'wenn nicht'}, {'sentence': 'quamdiu', 'type': '1. Wie lange? 2. im rel. Satzans. so lange als'}, {'sentence': 'quoniam', 'type': 'da ... ja'}, {'sentence': 'postquam', 'type': 'nachdem'}, {'sentence': 'quamquam', 'type': 'obwohl'}, {'sentence': 'denique', 'type': 'schließlich'}, {'sentence': 'nam', 'type': 'denn'}, {'sentence': 'num', 'type': 'denn'}, {'sentence': 'igitur', 'type': 'also, folglich'}, {'sentence': 'tunc', 'type': 'damals'}, {'sentence': 'tum', 'type': 'da, dann'}, {'sentence': 'tandem', 'type': 'endlich'}, {'sentence': 'parum', 'type': 'zu wenig'}];
+
+        let currentWordIndex = null;
+        const latinWordElement = document.getElementById("latin-word");
+        const translationInput = document.getElementById("translation-input");
+        const submitButton = document.getElementById("submit-button");
+        const resultElement = document.getElementById("result");
+
+        function getRandomWordIndex() {
+            return Math.floor(Math.random() * words.length);
+        }
+
+        function displayNextWord() {
+            try  {
+            currentWordIndex = getRandomWordIndex();
+            const currentWord = words[currentWordIndex];
+            latinWordElement.textContent = currentWord.sentence;
+            translationInput.value = "";
+            resultElement.textContent = "";
+            } catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        }
+
+        document.getElementById("quiz-form").addEventListener("submit", function (e) {
+            try {
+            e.preventDefault(); // Prevent the default form submission behavior
+            if (currentWordIndex !== null) {
+                const currentWord = words[currentWordIndex];
+                const userTranslation = translationInput.value.trim().toLowerCase();
+                if (userTranslation === currentWord.type.toLowerCase()) {
+                    resultElement.textContent = `Richtig! ${currentWord.type}`;
+                    // Remove the word from the list if translated correctly
+                    words.splice(currentWordIndex, 1);
+                } else {
+                    resultElement.textContent = `Falsch. Die richtige Antwort ist: ${currentWord.type}`;
+                }
+                setTimeout(displayNextWord, 1000); // Delay before showing the next word
+            }
+            }
+            catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        });
+
+        displayNextWord();
+    </script>
+</body>
+</html>
