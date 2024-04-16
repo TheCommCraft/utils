@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question and Answer Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    #question {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    #answerInput {
+      padding: 5px;
+      margin-bottom: 10px;
+      border-style: none none solid;
+      border-color: darkgray;
+    }
+
+    #result {
+      font-weight: bold;
+      color: red;
+    }
+
+    button {
+      border-radius: 10px;
+      border-style: none;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    button#subAns {
+      background-color: #6c6;
+    }
+
+    button#shoAns {
+      background-color: #88e;
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+  <div id="question"></div>
+  <br>
+  <input autocomplete="off" type="text" id="answerInput" placeholder="Your answer..." oninput="updateResult()">
+  <button onclick="checkAnswer()" id="subAns">Submit Answer</button>
+  <button onclick="skip()" id="skip">Skip</button>
+  <button onclick="displaySolution()" id="shoAns">Show Answer</button>
+  <div id="result"></div>
+</div>
+  <script>
+    // Define an array of questions and answers
+    const qaPairs = [{'question': 'Lebensdaten', 'answer': 'Lucius Annaeus Seneca (4 v. Chr.-65 n. Chr.), geboren in Spanien (Cordoba)'}, {'question': 'Karriere', 'answer': 'Ausbildung in Rom als Anwalt, Aufstieg zum Senator, Teil der Reichsverwaltung unter Nero'}, {'question': 'Exil und Rückkehr', 'answer': "Nach Verbannung auf Korsika durch Claudius' Ehefrau Agrippina zurückgeholt, zum Erzieher von Nero gemacht"}, {'question': 'Ende', 'answer': 'Beschloss 62 n. Chr., sich aus der Politik zurückzuziehen, 65 n. Chr. verurteilt und beging Selbstmord aufgrund einer Verschwörung gegen Nero'}, {'question': 'Werke', 'answer': 'Tragödien, Satire auf Claudius, stoische Schriften wie "De ira", "De clementia", "De vita beata", "De Brevitate vitae", "Epistulae morales ad Lucilium"'}, {'question': 'Philosophie', 'answer': 'Fokus auf ein glückliches Leben, Überwindung von falschen Vorstellungen, Reduzierung von Bedürfnissen, Leitung durch die Vernunft (ratio), Fortschreiten zur Weisheit als Lebensaufgabe, Akzeptanz von spontanen Emotionen wie Tränen und Kummer'}];
+
+    let currentQuestionIndex = 0;
+
+    function displayQuestion() {
+      const questionElement = document.getElementById("question");
+      questionElement.textContent = qaPairs[currentQuestionIndex].question;
+    }
+
+    function updateResult() {
+      const userAnswer = document.getElementById("answerInput").value.toLowerCase();
+      const correctAnswer = qaPairs[currentQuestionIndex].answer.toLowerCase();
+      const resultElement = document.getElementById("result");
+
+      if (correctAnswer.startsWith(userAnswer)) {
+        resultElement.style.color = "green";
+        resultElement.textContent = "You are doing great!";
+      } else {
+        resultElement.style.color = "red";
+        const minLength = Math.min(userAnswer.length, correctAnswer.length);
+        let commonPrefixLength = minLength;
+        const incorrectPart = userAnswer.substring(commonPrefixLength);
+        resultElement.textContent = `Incorrect. The correct answer starts with: ${correctAnswer.substring(0, commonPrefixLength)}${incorrectPart ? ' (You typed: ' + incorrectPart + ')' : ''}`;
+      }
+    }
+
+    function checkAnswer() {
+      const userAnswer = document.getElementById("answerInput").value.toLowerCase();
+      const correctAnswer = qaPairs[currentQuestionIndex].answer.toLowerCase();
+      const resultElement = document.getElementById("result");
+
+      if (userAnswer === correctAnswer) {
+        resultElement.style.color = "green";
+        resultElement.textContent = "Correct! Well done!";
+        // Move to the next question
+        currentQuestionIndex = (currentQuestionIndex + 1) % qaPairs.length;
+        // Display the next question
+        displayQuestion();
+      } else {
+        resultElement.style.color = "red";
+        resultElement.textContent = `Incorrect. The correct answer is: ${correctAnswer}`;
+        
+        currentQuestionIndex = 0;
+        displayQuestion();
+      }
+
+      // Clear the input field
+      document.getElementById("answerInput").value = "";
+    }
+
+    function skip() {
+        currentQuestionIndex ++;
+        displayQuestion();
+    }
+
+    function displaySolution() {
+        const resultElement = document.getElementById("result");
+        const correctAnswer = qaPairs[currentQuestionIndex].answer.toLowerCase();
+        resultElement.style.color = "green";
+        resultElement.textContent = `It is "${correctAnswer}".`;
+    }
+
+    // Submit on pressing Enter key
+    document.getElementById("answerInput").addEventListener("keyup", function(event) {
+      if (event.key === "Enter") {
+        checkAnswer();
+      }
+    });
+
+    // Initial setup
+    displayQuestion();
+  </script>
+
+</body>
+</html>
