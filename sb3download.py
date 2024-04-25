@@ -1,7 +1,7 @@
 import zipfile, requests, json, pickle
 from io import BytesIO
 
-headers= {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0','Accept': '*/*','Accept-Language': 'en, en;q=0.8','Origin': 'https://scratch.mit.edu','Connection': 'keep-alive','Referer': https://scratch.mit.edu/','Sec-Fetch-Dest': 'empty','Sec-Fetch-Mode': 'cors','Sec-Fetch-Site': 'same-site','Pragma': 'no-cache','Cache-Control': 'no-cache'}
+headers= {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0','Accept': '*/*','Accept-Language': 'en, en;q=0.8','Origin': 'https://scratch.mit.edu','Connection': 'keep-alive','Referer': 'https://scratch.mit.edu/','Sec-Fetch-Dest': 'empty','Sec-Fetch-Mode': 'cors','Sec-Fetch-Site': 'same-site','Pragma': 'no-cache','Cache-Control': 'no-cache'}
 
 def download_project(project_id, buffer=None):
     buffer = buffer or BytesIO()
