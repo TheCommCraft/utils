@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de"> <!-- Set the language to German -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latein Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin: 20px 0;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #latin-word {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #translation-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        #submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #333;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lateinquiz</h1>
+    <form id="quiz-form" autocomplete="off">
+        <div id="quiz-container">
+            <p id="latin-word">Italienisch hier</p>
+            <input type="text" id="translation-input" name="translation" placeholder="Geben Sie etwas ein">
+            <input type="submit" id="submit-button" value="Überprüfen">
+            <p id="result"></p>
+        </div>
+    </form>
+
+    <script>
+        let words = [{'sentence': 'amicitia', 'type': 'ae f. Freundschaft'}, {'sentence': 'amicus', 'type': 'i m. Freund'}, {'sentence': 'inimicus', 'type': 'a, um feindlich'}, {'sentence': 'inimicus', 'type': 'i m. Gegner, Feind'}, {'sentence': 'miseria', 'type': 'ae f. Elend'}, {'sentence': 'misericordia', 'type': 'ae f. Mitleid'}, {'sentence': 'miser', 'type': 'misera, miserum 1. elend, unglücklich'}, {'sentence': '2', 'type': '. arm(selig)'}, {'sentence': 'res', 'type': 'dubiae f. Pl. unsichere Lage, gefährliche Lage'}, {'sentence': 'res', 'type': 'secundae Glück'}, {'sentence': 'res', 'type': 'adversae Unglück'}, {'sentence': 'decet', 'type': 'es ziehmt sich, es ist angemessen'}, {'sentence': 'es', 'type': 'gehört sich'}, {'sentence': 'simul', 'type': 'gleichzeitig'}, {'sentence': 'quisquam', 'type': 'irgendeiner'}, {'sentence': 'uti', 'type': 'utor, usus sum (+ Abl.) gebrauchen, nutzen'}, {'sentence': 'usus', 'type': 'us m. Gebrauch; Nutzen'}, {'sentence': 'valere', 'type': 'valei, valui 1. stark/kräftig sein'}, {'sentence': '2', 'type': '. Einfluss haben'}, {'sentence': 'ceteri', 'type': 'ae, a die übrigen'}, {'sentence': 'magis', 'type': '... quam ... mehr ... als ...'}, {'sentence': 'mortales', 'type': 'ium m. Menschen'}, {'sentence': 'mortalis', 'type': 'is, e sterblich'}, {'sentence': 'mors', 'type': 'mortis f. der Tod'}, {'sentence': 'moriri', 'type': 'morior, mortuus sum sterben'}, {'sentence': 'iracundia', 'type': 'ae f. (Jäh-)Zorn'}, {'sentence': 'noscere', 'type': '-nosco, -novi, -notum kennen lernen, erfahren;'}, {'sentence': 'im', 'type': 'Pf. Wissen'}, {'sentence': 'licentia', 'type': 'ae f. 1. Freiheit 2. Willkür'}, {'sentence': '3', 'type': '. Zügellosigkeit'}, {'sentence': 'licet', 'type': 'licuit (+ Dat.) es ist möglich; es ist erlaubt'}, {'sentence': 'superbia', 'type': 'ae f. Hochmut; Stolz'}, {'sentence': 'superbus', 'type': 'a, um hochmütig, stolz'}, {'sentence': 'praeditus', 'type': 'a, um (+ Abl.) begabt; versehen mit etw.'}, {'sentence': 'fieri', 'type': 'fio, factus sum 1. werden, entstehen'}, {'sentence': '2', 'type': '. geschehen, sich ereignen'}, {'sentence': 'providere', 'type': '-video, -vidi, -visum 1. zuerst sehen 2. voraussehen'}, {'sentence': '3', 'type': '. Sorge tragen; vorsichtig sein'}, {'sentence': 'profecto', 'type': 'tatsächlich; auf alle Fälle'}, {'sentence': 'metus', 'type': 'us m. Angst; Furcht'}, {'sentence': 'metuere', 'type': 'metuo, metui 1. intrans fürchten'}, {'sentence': '2', 'type': '. trans. (be)fürchten'}, {'sentence': 'iniuria', 'type': 'ae f. Unrecht'}, {'sentence': 'ius', 'type': 'iuris n. das Recht'}, {'sentence': 'iudex', 'type': 'iudicis m Richter'}, {'sentence': 'iudicium', 'type': 'iudicii n. das Urteil, das Gericht'}, {'sentence': 'iudicare', 'type': '(be)urteilen, richten'}, {'sentence': 'decernere', 'type': 'decerno, decrevi, decretum entscheiden, beschließen'}, {'sentence': 'timor', 'type': 'oris m. die Angst; die Furcht'}, {'sentence': 'timere', 'type': 'timeo, timui (sich) fürchten'}, {'sentence': 'disserrere', 'type': 'dissero, disserui, dissertum erörtern, (be)sprechen'}, {'sentence': 'praesidium', 'type': 'i n. Schutz; Pl. Schutztruppen'}, {'sentence': 'poena', 'type': 'ae f. Strafe; Bestrafung'}, {'sentence': 'malum', 'type': 'i n. das Übel'}, {'sentence': 'malus', 'type': 'a, um schlecht, schlimm'}, {'sentence': 'equidem', 'type': 'allerdings, in der Tat'}, {'sentence': 'cunncti', 'type': 'ae, a alle'}];
+
+        let currentWordIndex = null;
+        const latinWordElement = document.getElementById("latin-word");
+        const translationInput = document.getElementById("translation-input");
+        const submitButton = document.getElementById("submit-button");
+        const resultElement = document.getElementById("result");
+
+        function getRandomWordIndex() {
+            return Math.floor(Math.random() * words.length);
+        }
+
+        function displayNextWord() {
+            try  {
+            currentWordIndex = getRandomWordIndex();
+            const currentWord = words[currentWordIndex];
+            latinWordElement.textContent = currentWord.sentence;
+            translationInput.value = "";
+            resultElement.textContent = "";
+            } catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        }
+
+        document.getElementById("quiz-form").addEventListener("submit", function (e) {
+            try {
+            e.preventDefault(); // Prevent the default form submission behavior
+            if (currentWordIndex !== null) {
+                const currentWord = words[currentWordIndex];
+                const userTranslation = translationInput.value.trim().toLowerCase();
+                if (userTranslation === currentWord.type.toLowerCase()) {
+                    resultElement.textContent = `Richtig! ${currentWord.type}`;
+                    // Remove the word from the list if translated correctly
+                    words.splice(currentWordIndex, 1);
+                } else {
+                    resultElement.textContent = `Falsch. Die richtige Antwort ist: ${currentWord.type}`;
+                }
+                setTimeout(displayNextWord, 1000); // Delay before showing the next word
+            }
+            }
+            catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        });
+
+        displayNextWord();
+    </script>
+</body>
+</html>
