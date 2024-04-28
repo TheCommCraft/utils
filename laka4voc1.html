@@ -106,14 +106,14 @@
             if (currentWordIndex !== null) {
                 const currentWord = words[currentWordIndex];
                 const userTranslation = translationInput.value.trim().toLowerCase();
-                if (userTranslation.split(/\W+/g) === currentWord.type.toLowerCase().split(/\W+/g)) {
+                if (userTranslation.trim().split(/\W+/g) === currentWord.type.toLowerCase().split(/\W+/g)) {
                     resultElement.textContent = `Richtig! ${currentWord.type}`;
                     // Remove the word from the list if translated correctly
                     words.splice(currentWordIndex, 1);
                 } else {
                     resultElement.textContent = `Falsch. Die richtige Antwort ist: ${currentWord.type}`;
                 }
-                setTimeout(displayNextWord, 1000); // Delay before showing the next word
+                setTimeout(displayNextWord, 2500); // Delay before showing the next word
             }
             }
             catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
