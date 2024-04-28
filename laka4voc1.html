@@ -106,7 +106,7 @@
             if (currentWordIndex !== null) {
                 const currentWord = words[currentWordIndex];
                 const userTranslation = translationInput.value.trim().toLowerCase();
-                if (userTranslation.replaceAll(/\W+/g, " ") === currentWord.type.trim().toLowerCase().replaceAll(/\W+/g, " ")) {
+                if (userTranslation.replaceAll(/\W+/g, " ").trim() === currentWord.type.trim().toLowerCase().replaceAll(/\W+/g, " ").trim()) {
                     resultElement.textContent = `Richtig! ${currentWord.type}`;
                     // Remove the word from the list if translated correctly
                     words.splice(currentWordIndex, 1);
