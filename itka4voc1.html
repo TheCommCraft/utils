@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de"> <!-- Set the language to German -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latein Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin: 20px 0;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #latin-word {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #translation-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        #submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #333;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Italienischquiz</h1>
+    <form id="quiz-form" autocomplete="off">
+        <div id="quiz-container">
+            <p id="latin-word">Italienisch hier</p>
+            <input type="text" id="translation-input" name="translation" placeholder="Geben Sie etwas ein">
+            <input type="submit" id="submit-button" value="Überprüfen">
+            <p id="result"></p>
+        </div>
+    </form>
+
+    <script>
+        let words = [{'sentence': 'Eppur si muove!', 'type': 'Und sie bewegt sich doch!'}, {'sentence': 'nascere, nato', 'type': 'geboren werden'}, {'sentence': 'frequentare', 'type': 'besuchen'}, {'sentence': 'la medicina', 'type': 'die Medizin hier: Studium'}, {'sentence': 'la meccanica', 'type': 'die Mechanik'}, {'sentence': 'fare parte di qs', 'type': 'teilnehmen an etw.'}, {'sentence': 'confrontarsi con qs', 'type': 'sich mit etw. auseinandersetzen'}, {'sentence': "l'apparecchio, gli apparecchi", 'type': 'der Apparat'}, {'sentence': 'la corte', 'type': 'der Hof, der Fürstenhof'}, {'sentence': 'affermare', 'type': 'behaupten'}, {'sentence': "l'universo", 'type': 'das Universum'}, {'sentence': 'la difficoltà', 'type': 'die Schwierigkeit'}, {'sentence': 'infine', 'type': 'schließlich'}, {'sentence': 'il processo', 'type': 'der Prozess'}, {'sentence': 'la prigione', 'type': 'das Gefängnis'}, {'sentence': 'pubblicare', 'type': 'veröffentlichen'}, {'sentence': 'la teoria', 'type': 'die Theorie'}, {'sentence': 'la villa', 'type': 'die Villa'}, {'sentence': 'la morte', 'type': 'der Tod'}, {'sentence': 'futuro', 'type': 'zukünftig'}, {'sentence': 'interessare', 'type': 'interessieren'}, {'sentence': 'il disegno', 'type': 'die Zeichnung'}, {'sentence': 'il cielo', 'type': 'der Himmel'}, {'sentence': 'la guerra', 'type': 'der krieg'}, {'sentence': 'la battaglia', 'type': 'der Kampf'}, {'sentence': 'il laborario', 'type': 'das Labor'}, {'sentence': 'il punto', 'type': 'der Punkt'}, {'sentence': 'la stella', 'type': 'der Stern'}, {'sentence': 'la scoperta', 'type': 'die Entdeckung'}, {'sentence': 'la sintonia', 'type': 'der Einklang'}, {'sentence': 'la bibbia', 'type': 'die Bibel'}, {'sentence': 'prendere una decisione', 'type': 'eine Entscheidung fassen'}, {'sentence': "l'ignorante", 'type': 'der Ignorant'}, {'sentence': 'ovvio', 'type': 'offensichtlich'}, {'sentence': 'rinnegare', 'type': 'verleugnen'}, {'sentence': 'ufficiale', 'type': 'offiziell'}, {'sentence': 'intorno', 'type': 'herum'}, {'sentence': 'sbagliarsi', 'type': 'sich irren'}, {'sentence': 'la corsa', 'type': 'das Rennen'}, {'sentence': "l'origine", 'type': 'die Herkunft'}, {'sentence': 'religioso', 'type': 'religiös'}, {'sentence': 'sebbene', 'type': 'obwohl'}, {'sentence': 'il legno', 'type': 'das Holz'}, {'sentence': 'la cima', 'type': 'der Gippfel'}, {'sentence': 'la statua', 'type': 'die Statue'}, {'sentence': 'dividersi', 'type': 'sich aufteilen'}, {'sentence': 'indossare', 'type': 'tragen'}, {'sentence': 'il costume', 'type': 'das Kostüm'}, {'sentence': 'azzuro', 'type': 'blau'}, {'sentence': 'tradizionale', 'type': 'traditionell'}, {'sentence': 'affinché', 'type': 'damit'}, {'sentence': "l'orgoglio", 'type': 'der Stolz'}, {'sentence': 'il maschio, i maschi', 'type': 'der Mann'}, {'sentence': 'benché', 'type': 'obwohl'}, {'sentence': 'tale', 'type': 'solche'}, {'sentence': 'antiquato', 'type': 'antiquiert'}, {'sentence': 'la tradizione', 'type': 'die Tradition'}, {'sentence': 'il valore', 'type': 'der Wert'}, {'sentence': 'la superstizione', 'type': 'der Aberglaube'}, {'sentence': 'anziano', 'type': 'alt'}, {'sentence': 'considerare', 'type': 'jmd für etw halten'}, {'sentence': 'impegnativo', 'type': 'anspruchsvoll'}, {'sentence': 'pesare', 'type': 'wiegen'}, {'sentence': 'verticale', 'type': 'senkrecht'}, {'sentence': 'il percorso', 'type': 'die Strecke'}, {'sentence': 'totale', 'type': 'gesamt'}, {'sentence': 'prima che', 'type': 'bevor'}, {'sentence': 'la gara', 'type': 'der Wettbewerb'}, {'sentence': 'fare bella figura', 'type': 'eine gute Figur machen'}, {'sentence': 'il turista', 'type': 'der Tourist'}, {'sentence': 'rendere', 'type': 'machen'}, {'sentence': 'dimostrare', 'type': 'beweisen'}, {'sentence': 'svoglersi', 'type': 'sich abspielen'}, {'sentence': 'succesivo', 'type': 'nachfolgend'}, {'sentence': "l'onore", 'type': 'die Ehre'}, {'sentence': 'autentico', 'type': 'orginal'}, {'sentence': 'esercitarsi', 'type': 'üben'}, {'sentence': "l'atteggiamento", 'type': 'die Haltung'}, {'sentence': 'il dubbio', 'type': 'der Zweifel'}];
+
+        let currentWordIndex = null;
+        const latinWordElement = document.getElementById("latin-word");
+        const translationInput = document.getElementById("translation-input");
+        const submitButton = document.getElementById("submit-button");
+        const resultElement = document.getElementById("result");
+
+        function getRandomWordIndex() {
+            return Math.floor(Math.random() * words.length);
+        }
+
+        function displayNextWord() {
+            try  {
+            currentWordIndex = getRandomWordIndex();
+            const currentWord = words[currentWordIndex];
+            latinWordElement.textContent = currentWord.sentence;
+            translationInput.value = "";
+            resultElement.textContent = "";
+            } catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        }
+
+        document.getElementById("quiz-form").addEventListener("submit", function (e) {
+            try {
+            e.preventDefault(); // Prevent the default form submission behavior
+            if (currentWordIndex !== null) {
+                const currentWord = words[currentWordIndex];
+                const userTranslation = translationInput.value.trim().toLowerCase();
+                if (userTranslation.replaceAll(/\W+/g, " ").trim() === currentWord.type.trim().toLowerCase().replaceAll(/\W+/g, " ").trim()) {
+                    resultElement.textContent = `Richtig! ${currentWord.type}`;
+                    // Remove the word from the list if translated correctly
+                    words.splice(currentWordIndex, 1);
+                } else {
+                    resultElement.textContent = `Falsch. Die richtige Antwort ist: ${currentWord.type}`;
+                }
+                setTimeout(displayNextWord, 1000); // Delay before showing the next word
+            }
+            }
+            catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        });
+
+        displayNextWord();
+    </script>
+</body>
+</html>
