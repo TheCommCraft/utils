@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de"> <!-- Set the language to German -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latein Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin: 20px 0;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #latin-word {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #translation-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        #submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #333;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Italienischquiz</h1>
+    <form id="quiz-form" autocomplete="off">
+        <div id="quiz-container">
+            <p id="latin-word">Italienisch hier</p>
+            <input type="text" id="translation-input" name="translation" placeholder="Geben Sie etwas ein">
+            <input type="submit" id="submit-button" value="Überprüfen">
+            <p id="result"></p>
+        </div>
+    </form>
+
+    <script>
+        let words = [{'sentence': 'In estate sono andato in Italia per le vacanze.', 'type': 'Im Sommer bin ich für den Urlaub nach Italien gefahren.'}, {'sentence': 'Abbiamo soggiornato in un bellissimo hotel vicino al mare.', 'type': 'Wir haben in einem schönen Hotel in der Nähe des Meeres gewohnt.'}, {'sentence': 'Ogni giorno facevamo il bagno in spiaggia.', 'type': 'Jeden Tag haben wir am Strand gebadet.'}, {'sentence': 'Ho mangiato molta pizza e gelato.', 'type': 'Ich habe viel Pizza und Eis gegessen.'}, {'sentence': 'Abbiamo visitato molti luoghi storici.', 'type': 'Wir haben viele historische Orte besucht.'}, {'sentence': 'Il tempo era sempre soleggiato e caldo.', 'type': 'Das Wetter war immer sonnig und warm.'}, {'sentence': "Una sera siamo andati a un concerto all'aperto.", 'type': 'Eines Abends sind wir zu einem Open-Air-Konzert gegangen.'}, {'sentence': 'Ho comprato dei souvenir per i miei amici.', 'type': 'Ich habe Souvenirs für meine Freunde gekauft.'}, {'sentence': 'Abbiamo fatto una gita in barca lungo la costa.', 'type': 'Wir haben einen Bootsausflug entlang der Küste gemacht.'}, {'sentence': "Mi sono divertito molto e non vedo l'ora di tornare.", 'type': 'Ich hatte viel Spaß und kann es kaum erwarten, zurückzukehren.'}];
+
+        let currentWordIndex = null;
+        const latinWordElement = document.getElementById("latin-word");
+        const translationInput = document.getElementById("translation-input");
+        const submitButton = document.getElementById("submit-button");
+        const resultElement = document.getElementById("result");
+
+        function getRandomWordIndex() {
+            return Math.floor(Math.random() * words.length);
+        }
+
+        function displayNextWord() {
+            try  {
+            currentWordIndex = getRandomWordIndex();
+            const currentWord = words[currentWordIndex];
+            latinWordElement.textContent = currentWord.sentence;
+            translationInput.value = "";
+            resultElement.textContent = "";
+            } catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        }
+
+        document.getElementById("quiz-form").addEventListener("submit", function (e) {
+            try {
+            e.preventDefault(); // Prevent the default form submission behavior
+            if (currentWordIndex !== null) {
+                const currentWord = words[currentWordIndex];
+                const userTranslation = translationInput.value.trim().toLowerCase();
+                if (userTranslation.replaceAll(/\W+/g, " ").trim() === currentWord.type.trim().toLowerCase().replaceAll(/\W+/g, " ").trim()) {
+                    resultElement.textContent = `Richtig! ${currentWord.type}`;
+                    // Remove the word from the list if translated correctly
+                    words.splice(currentWordIndex, 1);
+                } else {
+                    resultElement.textContent = `Falsch. Die richtige Antwort ist: ${currentWord.type}`;
+                }
+                setTimeout(displayNextWord, 1000); // Delay before showing the next word
+            }
+            }
+            catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        });
+
+        displayNextWord();
+    </script>
+</body>
+</html>
