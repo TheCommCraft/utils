@@ -92,7 +92,7 @@
         function handleFiles() {
             const fileList = this.files;
             let newWords = [];
-            const wordsId = Math.round(Math.random() * 1000000).toString();
+            const wordsId = Math.round(Math.random() * 1000000).toString()+"_dont_send_link_to_other_people_it_wont_work";
             for (const file of fileList) {
                 file.text().then((content) => {
                     for (const wordPair of JSON.parse(content)) {
