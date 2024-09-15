@@ -100,9 +100,9 @@
                     }
                 })
             }
-            words = newWords;
+            setTimeout(()=>{words = newWords;
             localStorage["words_"+wordsId] = JSON.stringify(words);
-            history.pushState({}, "", location.origin+location.pathname+"?"+wordsId);
+            history.pushState({}, "", location.origin+location.pathname+"?"+wordsId);},250);
         }
 
         let currentWordIndex = null;
