@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de"> <!-- Set the language to German -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latein Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin: 20px 0;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #latin-word {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #translation-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        #submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #333;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lateinquiz</h1>
+    <form id="quiz-form" autocomplete="off">
+        <div id="quiz-container">
+            <p id="latin-word">Italienisch hier</p>
+            <input type="text" id="translation-input" name="translation" placeholder="Geben Sie etwas ein">
+            <input type="submit" id="submit-button" value="Überprüfen">
+            <p id="result"></p>
+        </div>
+    </form>
+
+    <input type="file" id="fileInput" multiple />
+
+    <script>
+        let words = [{'sentence': 'concitare', 'type': 'in Bewegung setzen'}, {'sentence': 'erumpere', 'type': '1. hervorbrechen 2. einen Ausfall machen 3. führen zu'}, {'sentence': 'idem', 'type': 'eadem, idem der-, die-, dasselbe'}, {'sentence': 'vocare', 'type': 'rufen'}, {'sentence': 'contentus', 'type': '-a, -um zufrieden'}, {'sentence': 'iustus', 'type': '-a, -um gerecht, ordnungsgemäß'}, {'sentence': 'tegumen', 'type': 'teguminis Fellbezug'}, {'sentence': 'effringere', 'type': 'effringo, effregi, effractum aufbrechen, erbrechen'}, {'sentence': 'movere', 'type': 'moveo, movi, motum bewegen'}, {'sentence': 'commovere', 'type': 'bewegen, anregen'}, {'sentence': 'fasces', 'type': 'Rutenbündel'}, {'sentence': 'ne aliquis', 'type': 'irgendetwas'}, {'sentence': 'decus', 'type': 'Schönheit, Ruhm, Reiz'}, {'sentence': 'capere', 'type': 'fassen, ergreifen'}];
+
+        const possibleWordsId = document.URL.replace(location.origin+location.pathname+"?", "");
+        if ("words_"+possibleWordsId in localStorage) {
+            words = JSON.parse(localStorage["words_"+possibleWordsId]);
+        }
+
+        const elmFileInput = document.getElementById("fileInput");
+        elmFileInput.addEventListener("change", handleFiles, false);
+        function handleFiles() {
+            const fileList = this.files;
+            let newWords = [];
+            const wordsId = Math.round(Math.random() * 1000000).toString();
+            for (const file of fileList) {
+                file.text().then((content) => {
+                    for (const wordPair of JSON.parse(content)) {
+                        newWords.push(wordPair);
+                    }
+                })
+            }
+            words = newWords;
+            localStorage["words_"+wordsId] = JSON.stringify(words);
+            history.pushState({}, "", location.origin+location.pathname+"?"+wordsId);
+        }
+
+        let currentWordIndex = null;
+        const latinWordElement = document.getElementById("latin-word");
+        const translationInput = document.getElementById("translation-input");
+        const submitButton = document.getElementById("submit-button");
+        const resultElement = document.getElementById("result");
+
+        function getRandomWordIndex() {
+            return Math.floor(Math.random() * words.length);
+        }
+
+        function displayNextWord() {
+            try  {
+            currentWordIndex = getRandomWordIndex();
+            const currentWord = words[currentWordIndex];
+            latinWordElement.textContent = currentWord.sentence;
+            translationInput.value = "";
+            resultElement.textContent = "";
+            } catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        }
+
+        document.getElementById("quiz-form").addEventListener("submit", function (e) {
+            try {
+            e.preventDefault(); // Prevent the default form submission behavior
+            if (currentWordIndex !== null) {
+                const currentWord = words[currentWordIndex];
+                const userTranslation = translationInput.value.trim().toLowerCase();
+                if (userTranslation.replaceAll(/\W+/g, " ").trim() === currentWord.type.trim().toLowerCase().replaceAll(/\W+/g, " ").trim()) {
+                    resultElement.textContent = `Richtig! ${currentWord.type}`;
+                    // Remove the word from the list if translated correctly
+                    words.splice(currentWordIndex, 1);
+                } else {
+                    resultElement.textContent = `Falsch. Die richtige Antwort ist: ${currentWord.type}`;
+                }
+                setTimeout(displayNextWord, 2500); // Delay before showing the next word
+            }
+            }
+            catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
+        });
+
+        displayNextWord();
+    </script>
+</body>
+</html>
