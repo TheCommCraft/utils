@@ -49,8 +49,8 @@
             }
         </style>
         <script>
-            const data = [];
-            const reverseData = [];
+            var data = [];
+            var reverseData = [];
             const inputElm1 = document.getElementById("word");
             const inputElm2 = document.getElementById("translation");
             const wordsList = document.getElementById("words");
@@ -64,7 +64,7 @@
                 data.push({sentence: word, type: translation});
                 reverseData.push({sentence: translation, type: word});
                 const newElm = document.createElement("tr");
-                newElm.onclick = () => {newElm.remove()};
+                newElm.onclick = () => {data = data.filter((e) => (e.sentence !== newElm.firstChild.textContent)); reverseData = reverseData.filter((e) => (e.type !== newElm.firstChild.textContent)); newElm.remove();};
                 const wordElm = document.createElement("td");
                 wordElm.textContent = word;
                 const translationElm = document.createElement("td");
