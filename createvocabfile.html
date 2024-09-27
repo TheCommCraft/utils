@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        <script type="importmap">
+            {
+            "imports": {
+                "@material/web/": "https://esm.run/@material/web/"
+            }
+            }
+        </script>
+        <script type="module">
+            import '@material/web/all.js';
+            import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
+
+            document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+        </script>
+    </head>
+    <body>
+        <h1 class="md-typescale-display-medium">Create a vocabulary file</h1>
+        <form>
+            <p class="md-typescale-body-medium">Input word and translation and hit enter to add them.</p>
+            <md-outlined-text-field label="Word" value="" id="word"></md-outlined-text-field>
+            <md-outlined-text-field label="Translation" value="" id="translation"></md-outlined-text-field>
+            <div>
+                <md-outlined-button onclick="addToFile(); return false;">Add</md-outlined-button>
+                <md-outlined-button type="button" onclick="saveOne();">Save only direct translation file</md-outlined-button>
+                <md-outlined-button type="button" onclick="saveBoth();">Save both</md-outlined-button>
+            </div>
+        </form>
+        <table style="undefined;table-layout: fixed; width: 465px; font-family: Roboto;" id="words">
+            <colgroup>
+                <col style="width: 148.2px">
+                <col style="width: 317.2px">
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>Word</td>
+                    <td>Translation</td>
+                </tr>
+            </thead>
+        </table>
+        <style>
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        </style>
+        <script>
+            const data = [];
+            const reverseData = [];
+            const inputElm1 = document.getElementById("word");
+            const inputElm2 = document.getElementById("translation");
+            const wordsList = document.getElementById("words");
+
+            function addToFile() {
+                if (!(inputElm1.value && inputElm2.value)) return;
+                const word = inputElm1.value;
+                const translation = inputElm2.value;
+                inputElm1.value = "";
+                inputElm2.value = "";
+                data.push({sentence: word, type: translation});
+                reverseData.push({sentence: translation, type: word});
+                const newElm = document.createElement("tr");
+                newElm.onclick = () => {newElm.remove()};
+                const wordElm = document.createElement("td");
+                wordElm.textContent = word;
+                const translationElm = document.createElement("td");
+                translationElm.textContent = translation;
+                newElm.appendChild(wordElm);
+                newElm.appendChild(translationElm);
+                wordsList.appendChild(newElm);
+            }
+
+            function saveFile(filename, data) {
+                const blob = new Blob([data], {type: 'text/csv'});
+                if(window.navigator.msSaveOrOpenBlob) {
+                    window.navigator.msSaveBlob(blob, filename);
+                }
+                else{
+                    const elem = window.document.createElement('a');
+                    elem.href = window.URL.createObjectURL(blob);
+                    elem.download = filename;        
+                    document.body.appendChild(elem);
+                    elem.click();        
+                    document.body.removeChild(elem);
+                }
+            }
+
+            function saveOne() {
+                const id = Math.round(Math.random() * 10000);
+                saveFile("translation_"+id+".json", JSON.stringify(data));
+            }
+
+            function saveBoth() {
+                const id = Math.round(Math.random() * 10000);
+                saveFile("translation_"+id+".json", JSON.stringify(data));
+                saveFile("translation_"+id+"_reverse.json", JSON.stringify(reverseData));
+            }
+        </script>
+    </body>
+</html>
