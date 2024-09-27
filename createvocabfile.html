@@ -40,6 +40,7 @@
                 </tr>
             </thead>
         </table>
+        <input type="file" id="fileInput" multiple />
         <style>
             form {
                 display: flex;
@@ -54,6 +55,24 @@
             const inputElm1 = document.getElementById("word");
             const inputElm2 = document.getElementById("translation");
             const wordsList = document.getElementById("words");
+            const elmFileInput = document.getElementById("fileInput");
+            elmFileInput.addEventListener("change", handleFiles, false);
+
+            function handleFiles() {
+                const fileList = this.files;
+                for (const elm of wordsList.children) {
+                    if (elm.nodeName === "TR") setTimeout(()=>{elm.remove();},25);
+                }
+                data = [];
+                reverseData = [];
+                for (const file of fileList) {
+                    file.text().then((content) => {
+                        for (const wordPair of JSON.parse(content)) {
+                            addData(wordPair.sentence, wordPair.type);
+                        }
+                    })
+                }
+            }
 
             function addToFile() {
                 if (!(inputElm1.value && inputElm2.value)) return;
@@ -61,10 +80,14 @@
                 const translation = inputElm2.value;
                 inputElm1.value = "";
                 inputElm2.value = "";
+                addData(word, translation);
+            }
+
+            function addData(word, translation) {
                 data.push({sentence: word, type: translation});
                 reverseData.push({sentence: translation, type: word});
                 const newElm = document.createElement("tr");
-                newElm.onclick = () => {data = data.filter((e) => (e.sentence !== newElm.firstChild.textContent)); reverseData = reverseData.filter((e) => (e.type !== newElm.firstChild.textContent)); newElm.remove();};
+                newElm.onclick = () => {data = data.filter((e) => (e.sentence !== word)); reverseData = reverseData.filter((e) => (e.type !== word)); newElm.remove();};
                 const wordElm = document.createElement("td");
                 wordElm.textContent = word;
                 const translationElm = document.createElement("td");
@@ -90,12 +113,12 @@
             }
 
             function saveOne() {
-                const id = Math.round(Math.random() * 10000);
+                const id = Math.round(Math.random() * 1000000);
                 saveFile("translation_"+id+".json", JSON.stringify(data));
             }
 
             function saveBoth() {
-                const id = Math.round(Math.random() * 10000);
+                const id = Math.round(Math.random() * 1000000);
                 saveFile("translation_"+id+".json", JSON.stringify(data));
                 saveFile("translation_"+id+"_reverse.json", JSON.stringify(reverseData));
             }
