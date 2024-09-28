@@ -105,7 +105,8 @@
             setTimeout(()=>{words = newWords;
             localStorage["words_"+wordsId] = JSON.stringify(words);
             history.pushState({}, "", location.origin+location.pathname+"?"+wordsId);
-            document.getElementById("loaded-text").firstChild.textContent = "Loaded word set.";},250);
+            document.getElementById("loaded-text").firstChild.textContent = "Loaded word set.";
+            displayNextWord();},250);
         }
 
         let currentWordIndex = null;
@@ -114,23 +115,37 @@
         const submitButton = document.getElementById("submit-button");
         const resultElement = document.getElementById("result");
 
+
         function getRandomWordIndex() {
             return Math.floor(Math.random() * words.length);
         }
 
         function displayNextWord() {
+            currentTimeout = null;
             try  {
-            currentWordIndex = getRandomWordIndex();
-            const currentWord = words[currentWordIndex];
-            latinWordElement.textContent = currentWord.sentence;
-            translationInput.value = "";
-            resultElement.textContent = "";
+                currentWordIndex = getRandomWordIndex();
+                const currentWord = words[currentWordIndex];
+                latinWordElement.textContent = currentWord.sentence;
+                translationInput.value = "";
+                resultElement.textContent = "";
             } catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
         }
+
+        function skipDelay() {
+            if (currentTimeout === null) return;
+            clearTimeout(currentTimeout);
+            displayNextWord();
+        }
+
+        let currentTimeout = null;
 
         document.getElementById("quiz-form").addEventListener("submit", function (e) {
             try {
             e.preventDefault(); // Prevent the default form submission behavior
+            if (currentTimeout !== null) {
+                skipDelay();
+                return;
+            }
             if (currentWordIndex !== null) {
                 const currentWord = words[currentWordIndex];
                 const userTranslation = translationInput.value.trim().toLowerCase();
@@ -141,7 +156,7 @@
                 } else {
                     resultElement.textContent = `Falsch. Die richtige Antwort ist: ${currentWord.type}`;
                 }
-                setTimeout(displayNextWord, 2500); // Delay before showing the next word
+                currentTimeout = setTimeout(displayNextWord, 3500); // Delay before showing the next word
             }
             }
             catch (err) {resultElement.textContent = `Alles geschafft! :)`;}
