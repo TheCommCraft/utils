@@ -81,6 +81,36 @@
     <input type="file" id="fileInput" multiple accept=".lrnit"/>
 
     <script>
+        // Warn if overriding existing method
+        if(Array.prototype.equals)
+            console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+            // attach the .equals method to Array's prototype to call it on any array
+        Array.prototype.equals = function (array) {
+            // if the other array is a falsy value, return
+            if (!array)
+                return false;
+            // if the argument is the same array, we can be sure the contents are same as well
+            if(array === this)
+                return true;
+            // compare lengths - can save a lot of time 
+            if (this.length != array.length)
+                return false;
+        
+            for (var i = 0, l=this.length; i < l; i++) {
+                // Check if we have nested arrays
+                if (this[i] instanceof Array && array[i] instanceof Array) {
+                    // recurse into the nested arrays
+                    if (!this[i].equals(array[i]))
+                        return false;       
+                }           
+                else if (this[i] != array[i]) { 
+                    // Warning - two different object instances will never be equal: {x:20} != {x:20}
+                    return false;   
+                }           
+            }       
+            return true;
+        }
+        
         let words = [{'sentence': 'concitare', 'type': 'in Bewegung setzen'}, {'sentence': 'erumpere', 'type': '1. hervorbrechen 2. einen Ausfall machen 3. führen zu'}, {'sentence': 'idem', 'type': 'eadem, idem der-, die-, dasselbe'}, {'sentence': 'vocare', 'type': 'rufen'}, {'sentence': 'contentus', 'type': '-a, -um zufrieden'}, {'sentence': 'iustus', 'type': '-a, -um gerecht, ordnungsgemäß'}, {'sentence': 'tegumen', 'type': 'teguminis Fellbezug'}, {'sentence': 'effringere', 'type': 'effringo, effregi, effractum aufbrechen, erbrechen'}, {'sentence': 'movere', 'type': 'moveo, movi, motum bewegen'}, {'sentence': 'commovere', 'type': 'bewegen, anregen'}, {'sentence': 'fasces', 'type': 'Rutenbündel'}, {'sentence': 'ne aliquis', 'type': 'irgendetwas'}, {'sentence': 'decus', 'type': 'Schönheit, Ruhm, Reiz'}, {'sentence': 'capere', 'type': 'fassen, ergreifen'}];
 
         const possibleWordsId = document.URL.replace(location.origin+location.pathname+"?", "");
@@ -152,7 +182,7 @@
                 const splitUserTranslation = userTranslation.replaceAll(/\W+/g, " ").trim().split(" ").sort();
                 const splitSolution = currentWord.type.trim().toLowerCase().replaceAll(/\W+/g, " ").trim().split(" ").sort();
                 console.log(splitSolution, splitUserTranslation);
-                if (splitUserTranslation === splitSolution) {
+                if (splitUserTranslation.equals(splitSolution)) {
                     resultElement.textContent = `Richtig! ${currentWord.type}`;
                     // Remove the word from the list if translated correctly
                     words.splice(currentWordIndex, 1);
