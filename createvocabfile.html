@@ -40,7 +40,7 @@
                 </tr>
             </thead>
         </table>
-        <input type="file" id="fileInput" multiple />
+        <input type="file" id="fileInput" multiple accept=".lrnit"/>
         <style>
             form {
                 display: flex;
@@ -114,13 +114,13 @@
 
             function saveOne() {
                 const id = Math.round(Math.random() * 1000000);
-                saveFile("translation_"+id+".json", JSON.stringify(data));
+                saveFile("translation_"+id+".lrnit", JSON.stringify(data));
             }
 
             function saveBoth() {
                 const id = Math.round(Math.random() * 1000000);
-                saveFile("translation_"+id+".json", JSON.stringify(data));
-                saveFile("translation_"+id+"_reverse.json", JSON.stringify(reverseData));
+                saveFile("translation_"+id+".lrnit", JSON.stringify(data));
+                saveFile("translation_"+id+"_reverse.lrnit", JSON.stringify(reverseData));
             }
         </script>
     </body>
