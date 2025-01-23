@@ -149,8 +149,9 @@
             if (currentWordIndex !== null) {
                 const currentWord = words[currentWordIndex];
                 const userTranslation = translationInput.value.trim().toLowerCase();
-                const splitUserTranslation = userTranslation.replaceAll(/\W+/g, " ").trim().split(" ").sort()
-                const splitSolution = currentWord.type.trim().toLowerCase().replaceAll(/\W+/g, " ").trim().split(" ").sort()
+                const splitUserTranslation = userTranslation.replaceAll(/\W+/g, " ").trim().split(" ").sort();
+                const splitSolution = currentWord.type.trim().toLowerCase().replaceAll(/\W+/g, " ").trim().split(" ").sort();
+                console.log(splitSolution, splitUserTranslation);
                 if (splitUserTranslation === splitSolution) {
                     resultElement.textContent = `Richtig! ${currentWord.type}`;
                     // Remove the word from the list if translated correctly
