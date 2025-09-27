@@ -17,6 +17,15 @@
         </script>
     </head>
     <body>
+        <style>
+            tr:nth-child(even) {
+                background-color: #D6EEEE;
+            }
+            #delete-word {
+              background-color: red;
+              cursor: pointer;
+            }
+        </style>
         <h1 class="md-typescale-display-medium">Create a vocabulary file</h1>
         <form>
             <p class="md-typescale-body-medium">Input word and translation and hit enter to add them.</p>
@@ -32,11 +41,13 @@
             <colgroup>
                 <col style="width: 148.2px">
                 <col style="width: 317.2px">
+                <col style="width: 64px">
             </colgroup>
             <thead>
                 <tr>
                     <td>Word</td>
                     <td>Translation</td>
+                    <td>Options</td>
                 </tr>
             </thead>
         </table>
@@ -87,13 +98,17 @@
                 data.push({sentence: word, type: translation});
                 reverseData.push({sentence: translation, type: word});
                 const newElm = document.createElement("tr");
-                newElm.onclick = () => {data = data.filter((e) => (e.sentence !== word)); reverseData = reverseData.filter((e) => (e.type !== word)); newElm.remove();};
                 const wordElm = document.createElement("td");
                 wordElm.textContent = word;
                 const translationElm = document.createElement("td");
                 translationElm.textContent = translation;
+                const deleteElm = document.createElement("td");
+                deleteElm.textContent = "Delete";
+                deleteElm.id = "delete-word";
+                deleteElm.onclick = () => {data = data.filter((e) => (e.sentence !== word)); reverseData = reverseData.filter((e) => (e.type !== word)); newElm.remove();};
                 newElm.appendChild(wordElm);
                 newElm.appendChild(translationElm);
+                newElm.appendChild(deleteElm);
                 wordsList.appendChild(newElm);
             }
 
